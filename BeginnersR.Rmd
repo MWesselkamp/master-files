@@ -1,0 +1,254 @@
+---
+title: "R for Beginners"
+author: "Marieke Wesselkamp"
+output: html_notebook
+---
+
+## What is R? (Baby don't hurt me.)
+
+R is a free software environment for statistical computing and graphics. 
+It has it's own language, which to learn is extremely useful to face one common scientific task: data analysis.
+R is an interpreting programming languange. It executes a command typed into the console directly. This makes it easier to use than other programming languages, you won't have to write whole programs.
+
+In this short introduction we will explore the basics of R such that you get an idea of its language and what it can be used for throughout this course.
+
+## Install R and RStudio
+
+The software we will work with is Rstudio: it's a nice and user-friendly environment for programming in R. It offers tools for loading data, plotting and structuring your code. If you want to use it on your own computer and have not installed R and Rstudio yet, that's what you want to do first. Rstudio requires an installation of R before.
+
+Go to this website and install R.
+https://cran.rstudio.com/
+
+With the R installation already comes a very simple Rgui (=graphical user interface). Here, we can execute single lines of code. 
+
+After having installed R on your computer, you can now install and launch Rstudio:
+https://rstudio.com/products/rstudio/download/#download
+
+## The RStudio environment
+
+
+
+![](Rstudio.png)
+
+
+**Editor**: Here, you write down and structure the code.
+
+**Console**: Here, everything is exexuted. 
+
+**Environment**: All objects you create are saved into the R Environment. That is saved to the working memory on your computer and limited! To about 2GB?
+
+**Everything else**: For displaying plot, help files installed packages and information about the directory you're working in.
+
+## Objects in R
+
+When a command is executed, R can store the result in a named object. This is done with the assignment operator "<-" (or "=" - both can be used, with differences in execution order if used in one command. See also: https://stackoverflow.com/questions/1741820/what-are-the-differences-between-and-assignment-operators-in-r).   A value or multiple values are assigned to named objects. 
+
+```{r}
+value <- 5.7
+
+myname <- "Marieke"
+```
+
+If those assignments are executed, the objects will appear in your environment. If you want to know what's saved in the object, you can do that by calling it and its content will be displayed in the console. 
+
+```{r}
+value
+myname
+```
+
+Objects can be of different mode and type. The mode of an object represents the type of elements in that object. As we have seen above, we can store numbers in an object, but also names: they are of different types. It can simply be called with the function mode.
+
+```{r}
+mode(calculation)
+mode(myname)
+```
+
+There are four main modes of objects in R: logical, numeric, complex and character. You probably won't use complex objects a lot, but the others are very common.
+
+We can operate on objects. This can be done with so called operators. We aready used an assignment operator ('<-') but there are many more: mathematical (e.g. +/-), relational (e.g. </==) and logical operators (e.g. &/|). Their application results in new objects.
+
+```{r}
+calculation <- value*3-5
+calculation == value 
+```
+
+### Functions
+
+More complex operations can be applied to objects with functions. There is a range of functions that are implemented in R and that can be used directly. 
+For example the concatenate function *c()*, a function that combines its arguments to a new type of object: a vector. The operation is applied to the objects that are put into the function's parantheses.
+
+```{r}
+myvector = c(5.4, 6.2, 9.3, 12.9)
+```
+
+Functions have arguments: That are objects, that are required to pursue the operation. Lets have a closer look at the example of the function *mean()*, that calculates the mean of multiple values. In order to find out about what the function does and about its arguments, we can call the R help with a questionsmark ? before of the function.
+
+```{r}
+? mean
+```
+
+The help will open in the window for everything. Here we find all we need for now: A **description** of the function, it's **usage**, a long list of **arguments** that must/can be passed to the function and information about the **value** it returns. We now learn, that the mean function can be applied to a numerical or logical vector.
+
+```{r}
+mean(myvector)
+```
+
+This is a very basic example, but there is an incredible amount of functions for everything in R packages. 
+With the # sign, comments can be added to the code. This is useful because whoever reads it the next time can now better understand what the code is doing.
+
+```{r}
+# With the function sd() we can calculate the standard deviation of a vector
+sd(myvector)
+```
+
+### Datatypes
+
+
+We already used single values and vectors, but there are more important types of objects in R. 
+
+**Vector** Probably the most important object type in R. *Atomic* vectors can contain only one mode of its elements, this means they can be only numeric *or* character. Vectors can be created with the concatenate function c().
+
+```{r}
+vec <- c(5.7, 6.2, 9.1)
+```
+
+**Matrix** Adding another dimension to the data object we get a matrix: it has two dimensions, rows and columns. The numbers of rows and columns have to be specified when creating a matrix. By default, the values will be entered in the matrix by column. This can be changed with the argument 'byrow'.
+
+```{r}
+mymatrix <- matrix(1:9, nrow = 3, ncol = 3)
+```
+
+**List** A R list is internally also a type of vector, a *generic* vector. But in contrast to atomic vectors, lists can contain elements and objects of different modes and types: for example a vector and a character object.
+
+```{r}
+mylist <- list(vec, myname)
+mylist
+```
+
+**Data frame** The data frame is a common data structure when modelling with R. A data frame is combined lists of variables, with the same number of entries. It shares a lot with the object types matrix and list. In contrast to the matrix though, it's columns are named and variables can be of different modes.
+
+```{r}
+mydf <- data.frame(name = c("first", "second", "third"), value = vec)
+head(mydf)
+```
+
+
+## Data and data handling
+
+During this course, you will collect your own data and you will have to work with it. There are some built-in data sets in R that we use to explore this already. Lets have a look at the offer.
+```{r}
+data()
+```
+We will use the good old tree data set 'trees'. As we will manipulate it, let's assign it to a new data object, called 'mydata'.
+```{r}
+mydata <- trees
+```
+
+The data now also appears in the environment, as a data frame object. Clicking on it opens the data in a new editor window. By applying the function *head()* to the data set, the first few lines will be put out to the console.
+```{r}
+head(mydata)
+```
+
+Let's check the dimension of the data set.
+```{r}
+dim(mydata)
+```
+The first value indicates the rows, the second one the columns. So, we know that at 31 trees three variables were measured.
+
+We can also get a first statistical description of the data. This can be useful, if you are unsure of the quality of the data: are there missing values or strange boundary values?
+
+```{r}
+summary(mydata)
+```
+
+Editing and using data frames in R is very convenient. With the $ sign, columns of a data frame can be accessed directly. They can then be treated like vectors. 
+
+```{r}
+mydata$Girth
+```
+
+If we want to add a column to a data frame, say an ID of the measurements, this can be created on the fly.
+
+```{r}
+mydata$ID <- 1:nrow(mydata)
+```
+
+Sometimes, we don't want the whole data set but only parts of it. A rows and columns of a data frame can also be accessed by providing an *index* to squared parantheses [*i*,*j*]. The first value specifies the row, the second one the column. If we are interested in only the first row and all columns, the second position remains empty.
+```{r}
+mydata[1,]
+```
+
+We access the data frame also based on certain properties of the variables. Now, relational operators come into play again. We are, for example, interested in only the trees, which have a volume larger than 20. 
+
+```{r}
+mysmalldata <- mydata[mydata$Volume>20.0,]
+```
+
+## Loading and writing data
+
+Reading in data, writing data to files or saving plots to files: all of this happens in the working directory. You can get the current working directory with the *getwd()* function (in this case there is no argument required) and change it to your project folder with *setwd*.
+
+```{r}
+getwd()
+setwd("C:/Users/Marieke/Documents/Sc_Master/ResearchSkills19")
+```
+
+We want to save our edited and smaller trees data to an external file in the project folder on our computer. This is typically a text file or a .csv file. For the former we use the *write.table()*, for the latter the *write.csv()* function. 
+
+```{r}
+write.table(mysmalldata, file="trees_small.txt")
+```
+
+The next time you want to load your file into the R environment, you can either use the 'Import Dataset' tool, provided in the environment part of Rstudio, or you'll use the *read.table* function.
+
+```{r}
+mytrees <- read.table("trees_small.txt")
+```
+
+
+## What to do with the data and fitting a linear regression
+
+If you have collected and assembled your data and wonder what there is to do know -  you're going to plot it. 
+
+```{r eval=TRUE}
+plot(mydata)
+```
+
+This looks suspiciously like there is a correlation between volume and girth, and maybe even volume and height. 
+We can also have a look at the distribution of the variable values. A histogram is a nice way to do so.
+
+```{r}
+par(mfrow=c(1,3))
+hist(mydata$Volume)
+hist(mydata$Girth)
+hist(mydata$Height)
+```
+
+
+To get an idea of the relationship of those variables, we fit a linear regression model (lm) to the data. 
+
+```{r}
+fm <- lm(Volume ~ Height + Girth, data = mydata)
+summary(fm)
+```
+
+
+
+However, from Universtiy we know that the volume of a tree is proportional to its height and the squared stem radius. 
+We have girth as predictor, but maybe we get a better fit with a squared girth?
+```{r}
+mydata$Girth2 <- mydata$Girth^2
+fm2 <- lm(Volume ~ Height + Girth2, data = mydata)
+summary(fm2)
+```
+
+
+
+
+### Exercises
+
+## References
+
+Paradis, E. (2002). R for Beginners.
+
+Skarbek, Carl (2018): R for Beginners.
